@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>设备管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=DlDGuFzhYXsEbn2BNL4gKedzolz5rbGB"></script>
+  <script>
+  </script>
+  <!-- <script src="./src/filter/html2canvas.min.js"></script>
+  <script src="./src/filter/canvas2Images.js"></script> -->
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+<script>
+  // 首页调用摄像头录像
+  function getMedia() {
+    let constraints = {
+      video: { width: 250, height: 250 },
+      audio: true
+    };
+    //获得video摄像头区域
+    let video = document.getElementById("video");
+    //这里介绍新的方法，返回一个 Promise对象
+    // 这个Promise对象返回成功后的回调函数带一个 MediaStream 对象作为其参数
+    // then()是Promise对象里的方法
+    // then()方法是异步执行，当then()前的方法执行完后再执行then()内部的程序
+    // 避免数据没有获取到
+    let promise = navigator.mediaDevices.getUserMedia(constraints);
+    promise.then(function (MediaStream) {
+      video.srcObject = MediaStream;
+      video.play();
+      
+      takePhoto();
+      //添加到html中
+    }, function () {
+      alert('找不到摄像头');
+    });
+  }
+  function takePhoto() {
+    //获得Canvas对象
+    let video = document.getElementById("video");
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, 250, 250);
+     //创建图片   重点关键canvas.toDataURL('image/png');
+     var img = document.getElementById('picimages')
+      img.src = canvas.toDataURL("image/png");
+      // console.log(img.src)
+  }
+
+
+</script>
+
+</html>
